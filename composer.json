@@ -1,0 +1,39 @@
+{
+    "name": "yywxf/laravel-dingtalk",
+    "description": "钉钉自定义机器人，适用于做系统通知",
+    "keywords": [
+        "laravel",
+        "dingtalk"
+    ],
+    "type": "library",
+    "license": "MIT",
+    "authors": [
+        {
+            "name": "yywxf",
+            "email": "fangzenghua@qq.com"
+        }
+    ],
+    "minimum-stability": "dev",
+    "require": {
+        "php": ">=7.1.0"
+    },
+    "autoload": {
+        "psr-4": {
+            "Yywxf\\Dingtalk\\": "src/"
+        }
+    },
+    "extra": {
+        "laravel": {
+            "providers": [
+                "Yywxf\\Dingtalk\\DingtalkServiceProvider"
+            ],
+            "aliases": {
+                "Ding": "Yywxf\\Dingtalk\\Facades\\DingFacade"
+            }
+        }
+    },
+    "config": {
+        "sort-packages": true
+    },
+    "prefer-stable": true
+}
