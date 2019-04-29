@@ -1,6 +1,6 @@
 {
     "name": "yywxf/laravel-dingtalk",
-    "description": "钉钉自定义机器人，适用于做系统通知",
+    "description": "钉钉自定义机器人",
     "keywords": [
         "laravel",
         "dingtalk"
@@ -28,7 +28,7 @@
                 "Yywxf\\Dingtalk\\DingtalkServiceProvider"
             ],
             "aliases": {
-                "Ding": "Yywxf\\Dingtalk\\Facades\\DingFacade"
+                "Ding": "Yywxf\\Dingtalk\\Facades\\Ding"
             }
         }
     },

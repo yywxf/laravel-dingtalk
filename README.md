@@ -16,6 +16,7 @@ Yywxf\Dingtalk\DingtalkServiceProvider::class,
 覆盖配置文件 --force
 
 #### 文档
+>参考[钉钉文档](https://open-doc.dingtalk.com/microapp/serverapi3/iydd5h)
 ```php
 use Ding;
 
