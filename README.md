@@ -27,6 +27,11 @@ or
 \Ding::text('xxx');
 ```
 
+robot()指定机器人，默认default,可以配置dingtalk.php
+```php
+Ding::robot('default')->text();
+```
+
 text类型
 ```php
 Ding::text($text);
@@ -250,30 +255,6 @@ class Ding {
     {
         return \Yywxf\Dingtalk\Dingtalk::feed();
     }
-    
-    /**
-     * 发送消息
-     *
-     * @param $data
-     * @static 
-     */ 
-    public static function send($data)
-    {
-        return \Yywxf\Dingtalk\Dingtalk::send($data);
-    }
-    
-    /**
-     * curl 请求
-     *
-     * @param $remote_server
-     * @param $post_string
-     * @return bool|string 
-     * @static 
-     */ 
-    public static function request_by_curl($remote_server, $post_string)
-    {
-        return \Yywxf\Dingtalk\Dingtalk::request_by_curl($remote_server, $post_string);
-    }
-     
+
 }
 ```
