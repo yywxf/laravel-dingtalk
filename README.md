@@ -35,16 +35,16 @@ Ding::robot('default')->text();
 text类型
 ```php
 Ding::text($text);
-Ding::at(['155****'])->text($text);
+Ding::at(['155****'])->text($text,$arr=[]);
 Ding::atAll()->text($text);
 ```
 
 markdown类型
 ```php
 Ding::md($title,$text);
-Ding::at(['155****'])->md($title,$text);
-Ding::atAll()->md($title,$text);
 ```
+> 如果要@某人 使用 at() 或 atAll() ，$text 要加 @手机号
+
 link类型
 ```php
 Ding::link($title, $text, $messageUrl, $picUrl='');

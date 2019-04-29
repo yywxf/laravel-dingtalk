@@ -17,6 +17,7 @@ class Dingtalk
     public function __construct()
     {
         $this->apiUrl = config('dingtalk.url');
+        $this->timeout = config('dingtalk.timeout');
         $this->robot();
         $this->at();
     }
@@ -30,7 +31,6 @@ class Dingtalk
     public function robot(string $robot = 'default')
     {
         $this->webhook = $this->apiUrl . config('dingtalk.robot.' . $robot);
-        $this->timeout = config('dingtalk.timeout');
         return $this;
     }
 
@@ -80,7 +80,8 @@ class Dingtalk
             'text'    => ['content' => $content],
             'at'      => $this->at,
         ];
-        $this->send($data);
+        $this->at();//初始化
+        return $this->send($data);
     }
 
     /**
@@ -121,7 +122,8 @@ class Dingtalk
             ],
             'at'       => $this->at,
         ];
-        $this->send($data);
+        $this->at();//初始化
+        return $this->send($data);
     }
 
     /**
@@ -200,7 +202,7 @@ class Dingtalk
             $data['actionCard']['btns'] = $this->btns;
             unset($this->btns);
         }
-        $this->send($data);
+        return $this->send($data);
     }
 
     /**
@@ -247,7 +249,7 @@ class Dingtalk
             ],
         ];
         unset($this->links);
-        $this->send($data);
+        return $this->send($data);
     }
 
     /**
@@ -255,24 +257,24 @@ class Dingtalk
      *
      * @param $data
      */
-    public function send($data): void
+    public function send($data)
     {
         $data_string = json_encode($data, JSON_UNESCAPED_UNICODE);
 
         $result = $this->request_by_curl($this->webhook, $data_string);
         $res = json_decode($result);
-        dump($res);
+        $this->robot();//初始化
         try {
             if ($res->errcode !== 0) {
                 Log::error('[Ding]' . $result);
-            };
+                return ['code' => $res->errcode, 'msg' => $res->errmsg ?? ''];
+            }else{
+                return ['code' => $res->errcode, 'msg' => $res->errmsg];
+            }
         } catch (\Exception $e) {
             Log::error('[Ding] error' . $result . ' ' . $e->getMessage());
+            return ['code' => $res->errcode, 'msg' => $e->getMessage()];
         }
-
-        // todo 恢复初始状态
-        $this->robot();
-        $this->at();
     }
 
     /**
