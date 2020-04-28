@@ -54,7 +54,7 @@ class Dingtalk
      * 指定text消息@所有人
      * 在 text() 或 md() 前调用
      *
-     * @param bool  $isAtAll
+     * @param bool $isAtAll
      * @return $this
      */
     public function atAll()
@@ -74,7 +74,7 @@ class Dingtalk
      */
     public function text(string $content, array $params = [])
     {
-        $content .= empty($params) ? '' : ' ' . json_encode($params, JSON_UNESCAPED_UNICODE);
+        $content .= empty($params) ? '' : ' ' . json_encode($params, JSON_PRETTY_PRINT | JSON_UNESCAPED_UNICODE);
         $data = [
             'msgtype' => 'text',
             'text'    => ['content' => $content],
@@ -198,7 +198,7 @@ class Dingtalk
             $data['actionCard']['singleTitle'] = $this->single['title'];
             $data['actionCard']['singleURL'] = $this->single['url'];
             unset($this->single);
-        }else if (!empty($this->btns)) {
+        } else if (!empty($this->btns)) {
             $data['actionCard']['btns'] = $this->btns;
             unset($this->btns);
         }
@@ -268,7 +268,7 @@ class Dingtalk
             if ($res->errcode !== 0) {
                 Log::error('[Ding]' . $result);
                 return ['code' => $res->errcode, 'msg' => $res->errmsg ?? ''];
-            }else{
+            } else {
                 return ['code' => $res->errcode, 'msg' => $res->errmsg];
             }
         } catch (\Exception $e) {
