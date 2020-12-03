@@ -257,11 +257,15 @@ class Dingtalk
      *
      * @param $data
      */
-    public function send($data)
+    private function send($data)
     {
         $data_string = json_encode($data, JSON_UNESCAPED_UNICODE);
 
         $result = $this->request_by_curl($this->webhook, $data_string);
+        if(!$result) {
+            Log::debug('ding result',[$result]);
+            return ['msg'=>'dingtalk 请求失败'];
+        }
         $res = json_decode($result);
         $this->robot();//初始化
         try {
@@ -272,8 +276,8 @@ class Dingtalk
                 return ['code' => $res->errcode, 'msg' => $res->errmsg];
             }
         } catch (\Exception $e) {
-            Log::error('[Ding] error' . $result . ' ' . $e->getMessage());
-            return ['code' => $res->errcode, 'msg' => $e->getMessage()];
+            Log::error('[Ding] error' . $result . ' ' . $e->getMessage(), [$this->webhook, $data_string, $result, $res]);
+            return ['code' => $res ? $res->errcode : 0, 'msg' => $e->getMessage()];
         }
     }
 
@@ -284,7 +288,7 @@ class Dingtalk
      * @param $post_string
      * @return bool|string
      */
-    public function request_by_curl($remote_server, $post_string)
+    private function request_by_curl($remote_server, $post_string)
     {
         $ch = curl_init();
         curl_setopt($ch, CURLOPT_URL, $remote_server);
