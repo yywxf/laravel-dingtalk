@@ -261,23 +261,24 @@ class Dingtalk
     {
         $data_string = json_encode($data, JSON_UNESCAPED_UNICODE);
 
-        $result = $this->request_by_curl($this->webhook, $data_string);
-        if(!$result) {
-            Log::debug('ding result',[$result]);
-            return ['msg'=>'dingtalk 请求失败'];
-        }
-        $res = json_decode($result);
-        $this->robot();//初始化
         try {
+            Log::debug('[Ding] info',[$this->webhook, $data_string]);
+            $result = $this->request_by_curl($this->webhook, $data_string);
+            $this->robot();//初始化
+            if(!$result) {
+                Log::debug('[Ding] curl false result',[$result]);
+                return ['msg'=>'dingtalk 请求失败'];
+            }
+            $res = json_decode($result);
             if ($res->errcode !== 0) {
-                Log::error('[Ding]' . $result);
+                Log::error('[Ding] error', [$result]);
                 return ['code' => $res->errcode, 'msg' => $res->errmsg ?? ''];
             } else {
                 return ['code' => $res->errcode, 'msg' => $res->errmsg];
             }
         } catch (\Exception $e) {
-            Log::error('[Ding] error' . $result . ' ' . $e->getMessage(), [$this->webhook, $data_string, $result, $res]);
-            return ['code' => $res ? $res->errcode : 0, 'msg' => $e->getMessage()];
+            Log::error('[Ding]' . ' ' . $e->getMessage());
+            return ['code' => 'exception', 'msg' => $e->getMessage()];
         }
     }
 
